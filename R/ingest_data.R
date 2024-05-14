@@ -10,7 +10,7 @@ ptn_dose <- "(?<=_)([^_]+)(?=_)"
 ptn_last_number <- "([-+]?[0-9]*\\.[0-9]+)"
 
 # Define the folder path
-folder_path <- here("test_data")  # Replace with your actual folder path
+folder_path <- here("raw_data", "combined_uncleaned_data")  # Replace with your actual folder path
 
 # Get all excel files in the folder
 excel_files <- list.files(path = folder_path, pattern = "^[^~]*\\.xlsx$",
@@ -80,14 +80,13 @@ df <- df_ |>
                   map(head, n = -1)) |>
   # extract touch latencies to decision task
   dplyr::mutate(response_times = str_extract_all(mouse.time, ptn_last_number) |> map(as.numeric)) |>
-
   # distance between last touch and stimulus center
   dplyr::mutate(distance_to_center = if_else(response_correct == 1,
                                              sqrt((response_x_last - correct_pos_x)^2 + response_y_last^2),
                                              sqrt((response_x_last - incorrect_pos_x)^2) + response_y_last^2)) |>
-  dplyr::mutate(participant = factor(participant)) |>
+  dplyr::mutate(participant = str_to_title(participant) |> factor()) |>
   dplyr::select(-one_of(drop_cols))
 
 
-
+write_rds(df, here("data", "combined_data.rds"))
 # write_xlsx(df, here("data", "combined_data.xlsx"))
