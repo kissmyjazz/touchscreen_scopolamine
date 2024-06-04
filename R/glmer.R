@@ -5,11 +5,9 @@ library(lme4)
 library(modelsummary)
 library(splines)
 library(easystats)
-library(lmerTest)
 library(gamlss)
 library(gamlss.dist)
 library(gamlss.add)
-library(sjPlot)
 library(insight)
 library(broom.mixed)
 library(geepack)
@@ -79,7 +77,7 @@ AIC(m_success_s_Muffin)
 
 tab_model(m_success, m_success_s_Muffin, show.intercept = FALSE, show.r2 = TRUE,
           string.ci = "95% CI", file = here("tables", "gamlss_success_table.doc"))
-# write_rds(m_success, "C:/Users/jazzh/OneDrive/Documents/R/Code/touchscreen_scopolamine/gamlss_success.rds")
+# write_rds(m_success, "C:/Users/jazzh/OneDrive/Documents/R/Code/touchscreen_scopolamine/data/gamlss_success.rds")
 
 
 # Geese model
@@ -90,7 +88,7 @@ m_geese_success <- geese(response_correct ~ sex*dose + bs(test_day) + age + bs(t
         corstr = "ar1")
 
 summary(m_geese_success)
-# write_rds(m_geese_success, "C:/Users/jazzh/OneDrive/Documents/R/Code/touchscreen_scopolamine/m_geese_success.rds")
+# write_rds(m_geese_success, "C:/Users/jazzh/OneDrive/Documents/R/Code/touchscreen_scopolamine/data/m_geese_success.rds")
 
 
 m_success_glmer <- glmer(response_correct ~ sex*dose + age + ns(trial, 3) + ns(test_day, 3) +
@@ -108,9 +106,8 @@ df_10m <- df_s_Muffin |> dplyr::filter(choice_latency <= 10)
 m_latency <- gamlss(choice_latency ~ sex*dose + pbz(test_day) + age + pbz(trial) +
                       response_correct + response_correct_prev + response_num_touch +
                       distance_to_center_c + choice_latency_prev + initiation_time_last_c +
-                      response_side + re(random = ~pb(day)|participant) + (1|test_day), family = GB2(),
-                    nu.formula = ~dose, i.control = glim.control(cyc = 500, bf.cyc = 100),
-                    method = mixed(5, 40),
+                      response_side + re(random = ~pb(day)|participant), family = GA(),
+                    i.control = glim.control(cyc = 500, bf.cyc = 100),
                     data = df_10)
 summary(m_latency)
 plot(m_latency)
@@ -119,8 +116,8 @@ plot(m_latency)
 m_latency_s_Muffin <- gamlss(choice_latency ~ sex*dose + pbz(test_day) + age + pbz(trial) +
                       response_correct + response_correct_prev + response_num_touch +
                       distance_to_center_c + choice_latency_prev + initiation_time_last_c +
-                      response_side + re(random = ~pb(day)|participant) + (1|test_day), family = GB2(),
-                    nu.formula = ~dose, i.control = glim.control(cyc = 500, bf.cyc = 100), method = mixed(5, 40),
+                      response_side + re(random = ~pb(day)|participant), family = GA(),
+                    i.control = glim.control(cyc = 500, bf.cyc = 100),
                     data = df_10m)
 
 tab_model(m_latency, m_latency_s_Muffin, show.intercept = FALSE, show.r2 = TRUE,
@@ -148,8 +145,8 @@ m_geese_latency <- geese(choice_latency ~ sex*dose + bs(test_day) + age + bs(tri
                          corstr = "ar1")
 summary(m_geese_latency)
 
-# write_rds(m_latency, "C:/Users/jazzh/OneDrive/Documents/R/Code/touchscreen_scopolamine/gamlss_latency.rds")
-# write_rds(m_geese_latency, "C:/Users/jazzh/OneDrive/Documents/R/Code/touchscreen_scopolamine/m_geese_latency.rds")
+# write_rds(m_latency, "C:/Users/jazzh/OneDrive/Documents/R/Code/touchscreen_scopolamine/data/gamlss_latency.rds")
+# write_rds(m_geese_latency, "C:/Users/jazzh/OneDrive/Documents/R/Code/touchscreen_scopolamine/data/m_geese_latency.rds")
 
 dist <- fitDist(df$response_correct, k = 2, type = "binom", trace = FALSE, try.gamlss = TRUE)
 dist

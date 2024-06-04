@@ -5,6 +5,7 @@ library(afex)
 library(emmeans)
 library(kableExtra)
 library(flextable)
+library(ggsci)
 
 path <- here("data", "processed_data.rds")
 
@@ -39,10 +40,12 @@ summary(aov_accuracy)
 
 gg_afex_accuracy <- afex_plot(aov_accuracy, x = "test_day", trace = "dose", error = "within",
                      factor_levels = list(test_day = c("1", "2", "3", "4", "5")),
+                     mapping = c("shape", "linetype", "color"),
                      point_arg = list(size = 3), data_arg = list(cex = 2)) +
   theme_classic(base_size = 14) +
   labs(title = "Accuracy by test day and scopolamine dose",
-       x = "Test Day",
-       y = "Accuracy")
+       x = "Test day",
+       y = "Accuracy") +
+  scale_color_jco()
 
 gg_afex_accuracy
