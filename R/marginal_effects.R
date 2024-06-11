@@ -54,3 +54,27 @@ gg_success <- ggplot(df_sum_success, aes(dose, mean_pred, colour = sex,
   labs(y = "Accuracy", x = "Dose")
 
 gg_success
+
+# sex differences in accuracy by the training day --------------------------
+
+df_day_success <- df_success |>
+  dplyr::group_by(dose, sex, test_day) |>
+  dplyr::summarise(mean_pred = mean(predic),
+                   mean_resp = mean(response_correct),
+                   mean_upper_ci = mean(upper_ci),
+                   mean_lower_ci = mean(lower_ci))
+
+gg_success
+
+gg_day_success <- ggplot(df_day_success, aes(dose, mean_pred, colour = sex,
+                                         ymin = mean_lower_ci,
+                                         ymax = mean_upper_ci)) +
+  geom_linerange(position = dodge, linewidth = 1) +
+  geom_point(aes(y = mean_resp, group = sex), position = dodge,
+             size = 4, shape = 21, show.legend = FALSE) +
+  geom_point(position = dodge, size = 3) +
+  facet_wrap(~test_day) +
+  scale_color_jco() +
+  labs(y = "Accuracy", x = "Dose")
+
+gg_day_success
