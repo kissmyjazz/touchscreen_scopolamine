@@ -60,3 +60,14 @@ with(df |> dplyr::filter(response_correct == 0),
   as.data.frame() |> kbl(caption = "Table of the mean number of touches in the choice task for incorrect trials") |>
   kable_styling(full_width = FALSE, html_font = "Cambria")
 
+# accuracy by day  --------------------------------------------------------
+df_accuracy_summary <- df |>
+  group_by(participant, dose, test_day) |>
+  summarise(accuracy = mean(response_correct, na.rm = TRUE))
+
+df_accuracy_max <- df_accuracy_summary |>
+  group_by(participant, dose) |>
+  summarise(max_accuracy_day = test_day[which.max(accuracy)],
+            max_accuracy = max(accuracy))
+
+
