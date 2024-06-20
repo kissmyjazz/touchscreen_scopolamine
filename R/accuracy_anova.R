@@ -49,3 +49,4 @@ gg_afex_accuracy <- afex_plot(aov_accuracy, x = "test_day", trace = "dose", erro
   scale_color_jco()
 
 gg_afex_accuracy
+
