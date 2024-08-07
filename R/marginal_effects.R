@@ -69,7 +69,7 @@ gg_accuracy <- ggplot(df_sum_success, aes(dose, mean_pred, colour = sex,
   scale_color_jco() +
   labs(y = NULL, x = NULL) +
   guides(colour = "none") +
-  theme(plot.background = element_rect(colour = "firebrick3", fill = NA, size = 3))
+  theme(plot.background = element_rect(colour = "firebrick3", fill = "white", linewidth = 3))
 
 gg_accuracy
 
@@ -106,7 +106,7 @@ ggsave(filename = here("graphs", "accuracy_model_preds.pdf"),
        width = 8,
        dpi = 600)
 
-ggsave(filename = here("graphs", "accuracy_model_preds.png"),
+ggsave(filename = here("graphs", "accuracy_model_preds.svg"),
        plot = gg_inset,
        units = "in",
        height = 5,
@@ -163,7 +163,7 @@ ggsave(filename = here("graphs", "accuracy_by_sex_age_subject.pdf"),
        width = 8,
        dpi = 600)
 
-ggsave(filename = here("graphs", "accuracy_by_sex_age_subject.png"),
+ggsave(filename = here("graphs", "accuracy_by_sex_age_subject.svg"),
        plot = gg_combined,
        units = "in",
        height = 10,

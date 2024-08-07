@@ -34,3 +34,17 @@ gg_afex_no_trials <- afex_plot(aov_no_trials, x = "test_day", trace = "dose", er
   scale_color_jco()
 
 gg_afex_no_trials
+
+ggsave(filename = here("graphs", "anova_no_trials.pdf"),
+       plot = gg_afex_no_trials,
+       units = "in",
+       height = 5,
+       width = 8,
+       dpi = 600)
+
+ggsave(filename = here("graphs", "anova_no_trials.svg"),
+       plot = gg_afex_no_trials,
+       units = "in",
+       height = 5,
+       width = 8,
+       dpi = 600)
