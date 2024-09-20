@@ -50,3 +50,16 @@ gg_afex_accuracy <- afex_plot(aov_accuracy, x = "test_day", trace = "dose", erro
 
 gg_afex_accuracy
 
+ggsave(filename = here("graphs", "anova_accuracy.pdf"),
+       plot = gg_afex_accuracy,
+       units = "in",
+       height = 5,
+       width = 8,
+       dpi = 600)
+
+ggsave(filename = here("graphs", "anova_accuracy.svg"),
+       plot = gg_afex_accuracy,
+       units = "in",
+       height = 5,
+       width = 8,
+       dpi = 600)

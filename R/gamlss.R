@@ -55,7 +55,20 @@ m_success <- gamlss(response_correct ~ sex*dose + pbz(test_day) + age + pbz(tria
                    data = df)
 AIC(m_success)
 summary(m_success)
+
+pdf(here("graphs", "gamlss_diagnostic.pdf"),
+    width = 8, height = 6, # Width and height in inches
+    bg = "white",          # Background color
+    colormodel = "cmyk")
 plot(m_success)
+dev.off()
+
+svg(here("graphs", "gamlss_diagnostic.svg"),
+    width = 8, height = 6, # Width and height in inches
+    bg = "white")
+plot(m_success)
+dev.off()
+
 termplot(m_success)
 
 # adding the second degree polynomial of the distance to stimulus center
