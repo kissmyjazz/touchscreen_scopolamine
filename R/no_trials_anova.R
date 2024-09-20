@@ -24,9 +24,9 @@ summary(aov_no_trials)
 
 
 gg_afex_no_trials <- afex_plot(aov_no_trials, x = "test_day", trace = "dose", error = "within",
-                              mapping = c("shape", "linetype", "color"),
-                              factor_levels = list(test_day = c("1", "2", "3", "4", "5")),
-                              point_arg = list(size = 3), data_arg = list(cex = 2)) +
+                               mapping = c("shape", "linetype", "color"),
+                               factor_levels = list(test_day = c("1", "2", "3", "4", "5")),
+                               point_arg = list(size = 3), data_arg = list(cex = 2)) +
   theme_classic(base_size = 14) +
   labs(title = "Number of trials by test day and scopolamine dose",
        x = "Test day",
@@ -34,3 +34,17 @@ gg_afex_no_trials <- afex_plot(aov_no_trials, x = "test_day", trace = "dose", er
   scale_color_jco()
 
 gg_afex_no_trials
+
+ggsave(filename = here("graphs", "anova_no_trials.pdf"),
+       plot = gg_afex_no_trials,
+       units = "in",
+       height = 5,
+       width = 8,
+       dpi = 600)
+
+ggsave(filename = here("graphs", "anova_no_trials.svg"),
+       plot = gg_afex_no_trials,
+       units = "in",
+       height = 5,
+       width = 8,
+       dpi = 600)
