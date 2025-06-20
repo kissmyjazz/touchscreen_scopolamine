@@ -6,6 +6,8 @@ library(emmeans)
 library(kableExtra)
 library(flextable)
 library(ggsci)
+library(papaja)
+
 
 path <- here("data", "processed_data.rds")
 
@@ -14,6 +16,9 @@ df_no_trials <- read_rds(path) |>
   dplyr::group_by(participant, dose, test_day) |>
   dplyr::summarise(no_trials = n())
 
+# mean number of trials
+mean(df_no_trials$no_trials)
+
 aov_no_trials <- aov_ez("participant", "no_trials", df_no_trials, within = c("dose", "test_day"))
 aov_no_trials |> nice(aov = TRUE, p.adjust ="holm") |>
   as_flextable() |>
@@ -21,6 +26,8 @@ aov_no_trials |> nice(aov = TRUE, p.adjust ="holm") |>
   save_as_docx(path = here("tables", "no_trials_anova_table.docx"))
 
 summary(aov_no_trials)
+
+papaja::apa_print(aov_no_trials)
 
 
 gg_afex_no_trials <- afex_plot(aov_no_trials, x = "test_day", trace = "dose", error = "within",
