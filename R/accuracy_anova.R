@@ -6,14 +6,31 @@ library(emmeans)
 library(kableExtra)
 library(flextable)
 library(ggsci)
+library(rstatix)
 
 path <- here("data", "processed_data.rds")
 
 df_accuracy <- read_rds(path) |>
   dplyr::filter(response_num_touch <= 20) |>
   dplyr::filter(participant != "Muffin") |>
-  dplyr::group_by(participant, dose, test_day) |>
+  dplyr::group_by(participant, sex, dose, test_day) |>
   dplyr::summarise(accuracy = mean(response_correct))
+
+df_accuracy_day5_high_control <- df_accuracy |>
+  dplyr::filter(dose != "low", test_day == 5) |>
+  dplyr::mutate(dose = as.character(dose), test_day = NULL)
+
+vehicle <- df_accuracy_day5_high_control |>
+  dplyr::filter(dose == "vehicle") |> pull(accuracy)
+
+high <- df_accuracy_day5_high_control |>
+  dplyr::filter(dose == "high") |> pull(accuracy)
+
+mean(vehicle)
+mean(high)
+
+stats::t.test(vehicle, high, data = df_accuracy_day5_high_control, paired = TRUE)
+
 
 aov_accuracy <- aov_ez("participant", "accuracy", df_accuracy, within = c("dose", "test_day"))
 aov_accuracy |> nice(aov = TRUE, p.adjust ="holm") |>

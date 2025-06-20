@@ -6,6 +6,7 @@ library(emmeans)
 library(kableExtra)
 library(flextable)
 library(ggsci)
+library(papaja)
 
 path <- here("data", "processed_data.rds")
 
@@ -21,6 +22,8 @@ aov_choice_latency |> nice(aov = TRUE, p.adjust ="holm") |>
   save_as_docx(path = here("tables", "choice_latency_anova_table.docx"))
 
 summary(aov_choice_latency)
+
+papaja::apa_print(aov_choice_latency)
 
 
 gg_afex_choice_latency <- afex_plot(aov_choice_latency, x = "test_day", trace = "dose", error = "within",

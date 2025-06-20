@@ -22,7 +22,7 @@ df <- read_rds(here("data", "processed_data.rds")) |>
                 initiation_time_last_c = scale(initiation_time_last) |> as.numeric(),
                 choice_latency_prev_c = scale(choice_latency_prev) |> as.numeric(),
                 distance_to_center_c = scale(distance_to_center) |> as.numeric()) |>
-  na.omit() # to have the same numbe rof observations for trials with lookback to a previous trial
+  na.omit() # to have the same number of observations for trials with lookback to a previous trial
 
 
 # glmer -------------------------------------------------------------------
